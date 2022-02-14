@@ -1,26 +1,10 @@
 const express = require("express")
-const passport = require("passport")
-const GoogleStrategy = require("passport-google-oauth20").Strategy
-const keys = require("./config/keys")
 const app = express()
+const authRouter = require("./routes/authRoutes")
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: keys.googleClientID,
-      clientSecret: keys.googleClienSecret,
-      callbackURL: "/auth/google/callback",
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log("Access token:" , accessToken)
-      console.log("Refresh token:" , refreshToken)
-      console.log("Profile token:" , profile)
-    }
-  )
-)
+require("./services/passport")
 
-app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}))
-app.get('/auth/google/callback', passport.authenticate('google'))
+app.use("/auth", authRouter)
 
 app.listen(5001, () => {
   console.log("Server started listening to 3000")
