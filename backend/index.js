@@ -3,6 +3,7 @@ const app = express()
 const authRouter = require("./routes/authRoutes")
 
 require("./services/passport")
+require('./bootstrap')
 
 app.use("/auth", authRouter)
 
